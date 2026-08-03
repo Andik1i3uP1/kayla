@@ -292,10 +292,12 @@
     let mailBox = document.querySelector('.mail')
     let boxmail = document.querySelector('.boxMail')
     var close = document.querySelector('.fa-xmark')
-    mailBox.onclick = function () {
-        mailBox.classList.toggle('active')
-        boxmail.classList.add('active')
+    function openBoxMail(event) {
+        event.preventDefault();
+        boxmail.classList.add('active');
     }
+    mailBox.addEventListener('click', openBoxMail);
+    mailBox.addEventListener('touchend', openBoxMail);
 
     close.addEventListener('click', function () {
         boxmail.classList.remove('active')

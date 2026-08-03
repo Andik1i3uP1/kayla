@@ -151,9 +151,13 @@ body .confetti {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    touch-action: manipulation;
     z-index: 2;
     transform: scale(1);
     transition: all .5s ease-in-out;
+}
+#btn__letter .mail {
+    touch-action: manipulation;
 }
 #btn__letter:active{
     transform: scale(0.7);
