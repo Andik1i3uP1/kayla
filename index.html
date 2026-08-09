@@ -250,13 +250,18 @@
 
     var intervalContent;
     var intervalTitle;
-    $("#btn__letter").on("click", function (event) {
+    function openLetterBox(event) {
         event.preventDefault();
         unlockAudio();
-        $(".box__letter").slideDown()
+        $(".box__letter").slideDown();
         setTimeout(function () {
             $(".letter__border").slideDown();
-        }, 1000)
+        }, 1000);
+    }
+    $("#btn__letter").on("pointerdown click", function (event) {
+        if (event.type === "click" && event.pointerType === "touch") return;
+        openLetterBox(event);
+    });
         setTimeout(function () {
             intervalTitle = setInterval(function () {
                 if (currentIndexTitle < charArrTitle.length) {
@@ -319,12 +324,20 @@
         event.preventDefault();
         boxmail.classList.add('active');
     }
-    mailBox.addEventListener('click', openBoxMail);
-    mailBox.addEventListener('touchend', openBoxMail);
+    mailBox.addEventListener('pointerdown', openBoxMail);
+    mailBox.addEventListener('click', function (event) {
+        if (event.pointerType === 'touch') return;
+        openBoxMail(event);
+    });
 
-    close.addEventListener('click', function () {
-        boxmail.classList.remove('active')
-    })
+    close.addEventListener('pointerdown', function (event) {
+        event.preventDefault();
+        boxmail.classList.remove('active');
+    });
+    close.addEventListener('click', function (event) {
+        if (event.pointerType === 'touch') return;
+        boxmail.classList.remove('active');
+    });
 </script>
 
 </html>
