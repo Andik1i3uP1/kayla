@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="Ulang Tahun Kayla | Aoudumber Bade">
-    <meta name="github" content="https://github.com/Aoudumber-Bade">
+    <meta name="title" content="Ulang Tahun Kayla">
+    <meta name="author" content="Kayla's Birthday Project">
     <title>Ulang Tahun Kayla</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -163,11 +163,32 @@
     let currentIndexTitle = 0;
     let date__of__birth = document.querySelector(".date__of__birth span");
     let text__letter = document.querySelector(".text__letter p");
+    let audioContext = null;
+    let audioUnlocked = false;
 
-    function playHappyBirthday() {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
+    function ensureAudioContext() {
+        if (!audioContext) {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) return Promise.resolve(null);
+            audioContext = new AudioContextClass();
+        }
+
+        if (audioContext.state === "suspended") {
+            return audioContext.resume().catch(() => null);
+        }
+
+        return Promise.resolve(audioContext);
+    }
+
+    function unlockAudio() {
+        if (audioUnlocked) return Promise.resolve(audioContext);
+        audioUnlocked = true;
+        return ensureAudioContext();
+    }
+
+    async function playHappyBirthday() {
+        const ctx = await unlockAudio();
+        if (!ctx) return;
         const notes = [
             {freq: 392, duration: 0.25},
             {freq: 392, duration: 0.25},
@@ -229,7 +250,9 @@
 
     var intervalContent;
     var intervalTitle;
-    $("#btn__letter").on("click", function () {
+    $("#btn__letter").on("click", function (event) {
+        event.preventDefault();
+        unlockAudio();
         $(".box__letter").slideDown()
         setTimeout(function () {
             $(".letter__border").slideDown();
