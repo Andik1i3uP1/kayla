@@ -250,18 +250,14 @@
 
     var intervalContent;
     var intervalTitle;
-    function openLetterBox(event) {
+    $("#btn__letter").on("pointerdown click", function (event) {
+        if (event.type === "click" && event.pointerType === "touch") return;
         event.preventDefault();
         unlockAudio();
         $(".box__letter").slideDown();
         setTimeout(function () {
             $(".letter__border").slideDown();
         }, 1000);
-    }
-    $("#btn__letter").on("pointerdown click", function (event) {
-        if (event.type === "click" && event.pointerType === "touch") return;
-        openLetterBox(event);
-    });
         setTimeout(function () {
             intervalTitle = setInterval(function () {
                 if (currentIndexTitle < charArrTitle.length) {
@@ -275,17 +271,17 @@
                     clearInterval(intervalTitle)
                 }
             }, 70)
-        }, 800)
+        }, 800);
         setTimeout(function () {
             document.querySelector("#heart__letter").classList.add("animationOp");
             document.querySelector(".love__img").classList.add("animationOp");
             document.querySelector("#mewmew").classList.add("animationOp");
-        }, 2800)
+        }, 2800);
         setTimeout(function () {
             document.querySelectorAll(".heart").forEach((item) => {
                 item.classList.add("animation")
             })
-        }, 1800)
+        }, 1800);
         setTimeout(function () {
             playHappyBirthday();
             intervalContent = setInterval(function () {
@@ -297,8 +293,8 @@
                     clearInterval(intervalContent)
                 }
             }, 30)
-        }, 3000)
-    })
+        }, 3000);
+    });
     $(".close").on("click", function () {
         clearInterval(intervalContent)
         document.querySelector(".title__letter").textContent = "";
